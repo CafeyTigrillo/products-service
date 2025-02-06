@@ -37,7 +37,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
             docker pull richard28/products-service:latest
             cat << 'DOCKER_COMPOSE' > docker-compose.yml
-            version: '3.8'
+            version: '3.9'
 
             services:
               eureka-server:
