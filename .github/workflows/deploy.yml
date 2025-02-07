@@ -32,63 +32,14 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          echo "${{ secrets.AWS_SSH_KEY }}" > key.pem
-          chmod 400 key.pem
-          ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
+          echo "${{ secrets.AWS_SSH_KEY }}" > /tmp/key.pem
+          chmod 400 /tmp/key.pem
+          ssh -o StrictHostKeyChecking=no -i /tmp/key.pem ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
             docker pull richard28/products-service:latest
-            cat << 'DOCKER_COMPOSE' > docker-compose.yml
-            version: '3.9'
-
-            services:
-              eureka-server:
-                image: richard28/eureka-server:latest
-                container_name: eureka-server
-                ports:
-                  - "8761:8761"
-                networks:
-                  - app-network
-
-              clients-service:
-                image: richard28/clients-service:latest
-                container_name: clients-service
-                environment:
-                  - DB_HOST=database-prueba.cj37eoxikdhd.us-east-1.rds.amazonaws.com
-                  - DB_USER=admin
-                  - DB_PASS=Kiet1993
-                ports:
-                  - "8081:8081"
-                networks:
-                  - app-network
-
-              products-service:
-                image: richard28/products-service:latest
-                container_name: products-service
-                environment:
-                  - DB_HOST=database-prueba.cj37eoxikdhd.us-east-1.rds.amazonaws.com
-                  - DB_USER=admin
-                  - DB_PASS=Kiet1993
-                ports:
-                  - "8083:8083"
-                networks:
-                  - app-network
-
-              frontend:
-                image: richard28/frontend:latest
-                container_name: frontend
-                depends_on:
-                  - clients-service
-                  - products-service
-                ports:
-                  - "3000:3000"
-                networks:
-                  - app-network
-
-            networks:
-              app-network:
-                driver: bridge
-            DOCKER_COMPOSE
 
             docker-compose pull
+
             docker-compose up -d
+
             exit
           EOF
