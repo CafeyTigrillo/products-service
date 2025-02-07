@@ -51,10 +51,7 @@ jobs:
               clients-service:
                 image: richard28/clients-service:latest
                 container_name: clients-service
-                depends_on:
-                  - eureka-server
                 environment:
-                  - EUREKA_SERVER_HOST=http://eureka-server:8761/eureka
                   - DB_HOST=database-prueba.cj37eoxikdhd.us-east-1.rds.amazonaws.com
                   - DB_USER=admin
                   - DB_PASS=Kiet1993
@@ -66,15 +63,12 @@ jobs:
               products-service:
                 image: richard28/products-service:latest
                 container_name: products-service
-                depends_on:
-                  - eureka-server
                 environment:
-                  - EUREKA_SERVER_HOST=http://eureka-server:8761/eureka
                   - DB_HOST=database-prueba.cj37eoxikdhd.us-east-1.rds.amazonaws.com
                   - DB_USER=admin
                   - DB_PASS=Kiet1993
                 ports:
-                  - "8082:8082"
+                  - "8083:8083"
                 networks:
                   - app-network
 
