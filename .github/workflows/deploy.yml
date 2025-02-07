@@ -78,8 +78,6 @@ jobs:
                 depends_on:
                   - clients-service
                   - products-service
-                environment:
-                  - REACT_APP_API_URL=http://ec2-13-216-183-248.compute-1.amazonaws.com:8081
                 ports:
                   - "3000:3000"
                 networks:
